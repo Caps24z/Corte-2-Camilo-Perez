@@ -1,0 +1,76 @@
+class Usuario:
+    def _init_(self, nombre_completo, nickname, clave, tipo, fecha_creacion):
+        self.nombre_completo = nombre_completo
+        self.nickname = nickname
+        self.clave = clave
+        self.tipo = tipo
+        self.fecha_creacion = fecha_creacion
+
+    def to_dict(self):
+        return {
+            'nombre_completo': self.nombre_completo,
+            'nickname': self.nickname,
+            'clave': self.clave,
+            'tipo': self.tipo,
+            'fecha_creacion': self.fecha_creacion
+        }
+
+
+class SistemaUsuarios:
+    def _init_(self):
+        self.usuarios = {}
+
+    def agregar_usuario(self):
+        nombre_completo = input("Ingrese el nombre completo: ")
+        nickname = input("Ingrese el nickname: ")
+        clave = input("Ingrese la clave: ")
+        tipo = input("Ingrese el tipo de usuario: ")
+        fecha_creacion = input("Ingrese la fecha de creación (YYYY-MM-DD): ")
+
+        usuario = Usuario(nombre_completo, nickname, clave, tipo, fecha_creacion)
+        self.usuarios[nickname] = usuario.to_dict()
+        print(f"Usuario '{nickname}' agregado exitosamente.")
+
+    def buscar_usuario(self):
+        nickname = input("Ingrese el nickname del usuario a buscar: ")
+        usuario = self.usuarios.get(nickname)
+        if usuario:
+            print("Usuario encontrado:")
+            for key, value in usuario.items():
+                print(f"{key}: {value}")
+        else:
+            print("Usuario no encontrado.")
+
+    def eliminar_usuario(self):
+        nickname = input("Ingrese el nickname del usuario a eliminar: ")
+        if nickname in self.usuarios:
+            del self.usuarios[nickname]
+            print(f"Usuario '{nickname}' eliminado exitosamente.")
+        else:
+            print("Usuario no encontrado.")
+
+    def menu(self):
+        while True:
+            print("\n--- Menú de Usuarios ---")
+            print("1. Agregar Usuario")
+            print("2. Buscar Usuario")
+            print("3. Eliminar Usuario")
+            print("4. Salir")
+            opcion = input("Seleccione una opción: ")
+
+            if opcion == '1':
+                self.agregar_usuario()
+            elif opcion == '2':
+                self.buscar_usuario()
+            elif opcion == '3':
+                self.eliminar_usuario()
+            elif opcion == '4':
+                print("Saliendo del sistema.")
+                break
+            else:
+                print("Opción no válida. Por favor, intente de nuevo.")
+
+
+if _name_ == "_main_":
+    sistema = SistemaUsuarios()
+    sistema.menu()
